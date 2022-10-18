@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
 import s from './form.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/conactSlice';
+import { selectContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
 
 const Form = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setNumber] = useState('');
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.items);
+  const contacts = useSelector(selectContacts);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -26,7 +26,7 @@ const Form = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const contact = { id: nanoid(), name: name, number: number };
+    const contact = { name: name, phone: phone };
     contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())
       ? alert(`${name} - already exists`)
       : dispatch(addContact(contact));
@@ -63,7 +63,7 @@ const Form = () => {
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
           onChange={handleChange}
-          value={number}
+          value={phone}
         />
       </label>
       <button className={s.button} type="submit">

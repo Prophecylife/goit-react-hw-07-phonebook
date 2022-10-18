@@ -1,28 +1,23 @@
 import React from 'react';
 import Contact from 'components/Contact/Contact';
-// import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-// import { removeContact } from 'redux/conactSlice';
+import { deleteContact } from 'redux/operations';
+import { selectVisibleContacts } from 'redux/selectors';
 
 const Contacts = () => {
-  const contacts = useSelector(state => state.items);
-  const filter = useSelector(state => state.filter);
-  const filteredContacts = filter
-    ? contacts.filter(({ name }) =>
-        name.toLowerCase().includes(filter.toLowerCase())
-      )
-    : contacts;
+  // debugger;
+  const filteredContacts = useSelector(selectVisibleContacts);
 
   return (
     <ul>
-      {filteredContacts.map(({ name, number, id }) => {
+      {filteredContacts.map(({ name, phone, id }) => {
         return (
           <Contact
             key={id}
             name={name}
-            number={number}
+            number={phone}
             id={id}
-            // deleteContact={removeContact}
+            deleteContact={deleteContact(id)}
           />
         );
       })}
